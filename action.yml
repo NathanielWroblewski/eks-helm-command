@@ -1,0 +1,36 @@
+name: 'EKS Helm Action'
+description: 'Execute helm commands on an EKS cluster'
+branding:
+    icon: anchor
+    color: yellow
+inputs:
+    aws-access-key-id:
+        description: 'AWS access key ID credential'
+        required: true
+    aws-secret-access-key:
+        description: 'AWS secret access key credential'
+        required: true
+    aws-region:
+        description: 'AWS region (defaults to us-east-2)'
+        required: true
+        default: us-east-2
+    cluster-name:
+        description: 'Name of the AWS EKS cluster'
+        required: true
+    cluster-role-arn:
+        description: 'Amazon Resource Name (ARN) of the AWS EKS cluster'
+        required: false
+    command:
+        description: 'Command to run'
+        required: true
+
+runs:
+    using: 'docker'
+    image: 'docker://nathanielwroblewski/eks-helm-command:v1'
+    env:
+        AWS_ACCESS_KEY_ID: ${{ inputs.aws-access-key-id }}
+        AWS_SECRET_ACCESS_KEY: ${{ inputs.aws-secret-access-key }}
+        AWS_REGION: ${{ inputs.aws-region }}
+        CLUSTER_NAME: ${{ inputs.cluster-name }}
+        CLUSTER_ROLE_ARN: ${{ inputs.cluster-role-arn }}
+        COMMAND: ${{ inputs.command }}
